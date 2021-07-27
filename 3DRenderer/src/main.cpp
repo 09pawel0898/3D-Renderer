@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "App.h"
+#include "Utility.h"
 
 int main(void)
 {
-	show_console_cursor(false);
+	Utility::console_cursor(false);
 	App app;
-	//app.run();
+	app.run();
 	exit(EXIT_SUCCESS);
 }

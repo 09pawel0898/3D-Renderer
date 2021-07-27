@@ -6,7 +6,7 @@ namespace States
 {
 	enum class ID : uint8_t
 	{
-		MAIN,
+		RENDERING,
 		NONE
 	};
 }
