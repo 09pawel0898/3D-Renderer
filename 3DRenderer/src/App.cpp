@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "App.h"
-#include "Utility.h"
 #include "./Engine/State.h"
 #include "./Engine/StateIdentifiers.h"
 #include "./RenderingState/RenderingState.h"
@@ -11,13 +10,20 @@ const sf::Time App::TIME_PER_FRAME = sf::seconds(1.0f / 60.0f);
 int App::HEIGHT = 720;
 int App::WIDTH = 1280;
 
+static std::string to_string(size_t value)
+{
+	std::stringstream stream;
+	stream << value;
+	return stream.str();
+}
+
 App::App(void) 
 	:	mTextures(),
 		mFonts(),
 		mFpsLabel(),
 		FPS(0)
 {
-	mWindow = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "AStarSimulation", sf::Style::Titlebar | sf::Style::Close);
+	mWindow = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "3DRenderer", sf::Style::Titlebar | sf::Style::Close);
 	mStateManager = new StateManager(States::State::Context(mWindow, &mTextures, &mFonts));
 
 	init_fonts();
@@ -61,7 +67,7 @@ void App::update_statistics(sf::Time elapsedTime)
 
 	if (statisticsUpdateTime >= sf::seconds(1.0f))
 	{
-		mFpsLabel.setString("FPS = " + Utility::to_string(FPS) + "\n");
+		mFpsLabel.setString("FPS = " + to_string(FPS) + "\n");
 		statisticsUpdateTime -= sf::seconds(1.0f);
 		FPS = 0;
 	}

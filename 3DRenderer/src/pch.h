@@ -9,6 +9,7 @@
 #include <utility>
 #include <functional>
 #include <assert.h>
+#include <sstream>
 
 typedef sf::Vector2i vec2i;
 typedef sf::Vector2f vec2f;

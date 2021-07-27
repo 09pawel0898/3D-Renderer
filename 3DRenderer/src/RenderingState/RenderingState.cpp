@@ -53,9 +53,9 @@ namespace States
 			enable = false;
 			switch (event.key.code)
 			{
-				//case sf::Keyboard::Space: 
+				case sf::Keyboard::Space: 
 					//mWorld->change_path_visibility();
-					//break;
+					break;
 				
 			}
 		}

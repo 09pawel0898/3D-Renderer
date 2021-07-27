@@ -1,14 +1,17 @@
 #pragma once
 
-#include "vector.h"
+#include "Vector.h"
 #include "SFML/Graphics/Color.hpp"
 
-struct Triangle
+namespace math
 {
-	Vec3f v[3];								/* 3 triangle points */
-	Vec3f normal;							/* triangle normal vector */
-	sf::Color color = sf::Color::White;		/* default color */
-};
+	struct Triangle
+	{
+		Vec3f v[3];								/* 3 triangle points */
+		Vec3f normal;							/* triangle normal vector */
+		sf::Color color = sf::Color::White;		/* default color */
+	};
+}
 
 
 
