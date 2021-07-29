@@ -3,6 +3,7 @@
 #include "Math/vector.h"
 #include "Debug.h"
 
+
 int main(void)
 {
 	Debug::console_cursor(false);

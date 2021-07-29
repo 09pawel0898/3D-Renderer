@@ -260,7 +260,7 @@ public:
     /// \see getPosition
     ///
     ////////////////////////////////////////////////////////////
-    void setPosition(const Vector2i& position);
+    void setPosition(const Vector2i& mPosition);
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the size of the rendering region of the window

@@ -12,10 +12,10 @@ namespace math
 		Vec3f(float x, float y, float z, float _w = 0.0f) : sf::Vector3f(x, y, z), w(_w) {}
 		~Vec3f() {}
 
-		void show(void);			/* shows vector components to the console */
-		void normalise(void);		/* overrides this vector by its normalised version */
-		void divide_vec_by_W(void);	/* divides x,y,z components by 'W' value */
-		float get_lenght(void);		/* returns vector lenght */
+		void show(void);			// shows vector components to the console 
+		void normalise(void);		// overrides this vector by its normalised version 
+		void divide_vec_by_W(void);	// divides x,y,z components by 'W' value 
+		float get_lenght(void);		// returns vector lenght 
 
 		operator sf::Vector3i() const { return static_cast<sf::Vector3i>(*this); }
 
@@ -24,4 +24,7 @@ namespace math
 		Vec3f operator * (const float rhs) const	{ return Vec3f(this->x * rhs, this->y * rhs, this->z * rhs); }
 		Vec3f operator / (const float rhs) const	{ return Vec3f(this->x / rhs, this->y / rhs, this->z / rhs, this->w); }
 	};
+
+	inline float vec2_lenght(sf::Vector2f& vec) { return sqrt(vec.x * vec.x + vec.y * vec.y); }
+	inline float vec3_lenght(sf::Vector3f& vec) { return sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z); }
 }

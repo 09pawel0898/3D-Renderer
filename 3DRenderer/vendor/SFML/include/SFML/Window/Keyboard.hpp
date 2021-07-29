@@ -71,9 +71,9 @@ public:
         U,            ///< The U key
         V,            ///< The V key
         W,            ///< The W key
-        X,            ///< The X key
-        Y,            ///< The Y key
-        Z,            ///< The Z key
+        X_AXIS,            ///< The X key
+        Y_AXIS,            ///< The Y key
+        Z_AXIS,            ///< The Z key
         Num0,         ///< The 0 key
         Num1,         ///< The 1 key
         Num2,         ///< The 2 key

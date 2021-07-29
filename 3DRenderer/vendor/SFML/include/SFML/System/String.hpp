@@ -384,7 +384,7 @@ public:
     /// \param count    Number of characters to erase
     ///
     ////////////////////////////////////////////////////////////
-    void erase(std::size_t position, std::size_t count = 1);
+    void erase(std::size_t mPosition, std::size_t count = 1);
 
     ////////////////////////////////////////////////////////////
     /// \brief Insert one or more characters into the string
@@ -396,7 +396,7 @@ public:
     /// \param str      Characters to insert
     ///
     ////////////////////////////////////////////////////////////
-    void insert(std::size_t position, const String& str);
+    void insert(std::size_t mPosition, const String& str);
 
     ////////////////////////////////////////////////////////////
     /// \brief Find a sequence of one or more characters in the string
@@ -424,7 +424,7 @@ public:
     /// \param replaceWith String that replaces the given substring.
     ///
     ////////////////////////////////////////////////////////////
-    void replace(std::size_t position, std::size_t length, const String& replaceWith);
+    void replace(std::size_t mPosition, std::size_t length, const String& replaceWith);
 
     ////////////////////////////////////////////////////////////
     /// \brief Replace all occurrences of a substring with a replacement string
@@ -453,7 +453,7 @@ public:
     /// \return String object containing a substring of this object
     ///
     ////////////////////////////////////////////////////////////
-    String substring(std::size_t position, std::size_t length = InvalidPos) const;
+    String substring(std::size_t mPosition, std::size_t length = InvalidPos) const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Get a pointer to the C-style array of characters

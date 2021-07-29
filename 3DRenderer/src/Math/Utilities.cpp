@@ -1,51 +1,44 @@
 #include "../pch.h"
 #include "Utilities.h"
 
-
 namespace math
 {
-    /*
-    bool calculateNormal(Triangle& triangle, const Camera& cam)
+    
+    bool calculate_normal(Triangle& triangle, const Vec3f& cameraPos)
     {
-        sf::Vector3f sidea, sideb;
-        static int c = 0;
+        // vectors that represents two sides of a given triangle
+        sf::Vector3f sideA = {  triangle.v[1].x - triangle.v[0].x ,
+                                triangle.v[1].y - triangle.v[0].y ,
+                                triangle.v[1].z - triangle.v[0].z };
 
-        // vector that represents first side of a triangle
-        sidea.x = triangle.v[1].x - triangle.v[0].x;
-        sidea.y = triangle.v[1].y - triangle.v[0].y;
-        sidea.z = triangle.v[1].z - triangle.v[0].z;
-
-        // vector that represents second side of a triangle
-        sideb.x = triangle.v[2].x - triangle.v[0].x;
-        sideb.y = triangle.v[2].y - triangle.v[0].y;
-        sideb.z = triangle.v[2].z - triangle.v[0].z;
-
+        sf::Vector3f sideB = {  triangle.v[2].x - triangle.v[0].x ,
+                                triangle.v[2].y - triangle.v[0].y ,
+                                triangle.v[2].z - triangle.v[0].z };
 
         // calculating normal vector 
-        triangle.normal.x = sidea.y * sideb.z - sidea.z * sideb.y;
-        triangle.normal.y = sidea.z * sideb.x - sidea.x * sideb.z;
-        triangle.normal.z = sidea.x * sideb.y - sidea.y * sideb.x;
+        triangle.normal.x = sideA.y * sideB.z - sideA.z * sideB.y;
+        triangle.normal.y = sideA.z * sideB.x - sideA.x * sideB.z;
+        triangle.normal.z = sideA.x * sideB.y - sideA.y * sideB.x;
+        triangle.normal.normalise();    // and taking it into a unit vector 
 
+        // if Z component of normal vector in compare to the camera position allows triangle to be drawn then i can draw it into the screen
+        auto triangleShouldBeVisible = [&]() 
+        {
+            if (triangle.normal.x * (triangle.v[0].x - cameraPos.x) +
+                triangle.normal.y * (triangle.v[0].y - cameraPos.y) +
+                triangle.normal.z * (triangle.v[0].z - cameraPos.z) < 0.0f)
+            { return true; } else { return false; }
+        };
 
-        // and taking it into a unit vector 
-        triangle.normal.normaliseVector();
-
-        // if Z component of normal vector in compare to the camera position allows triangle to be drawn then i can draw it into the screen 
-        if (triangle.normal.x * (triangle.v[0].x - cam.position.x) + triangle.normal.y * (triangle.v[0].y - cam.position.y) + triangle.normal.z * (triangle.v[0].z - cam.position.z) < 0.0f)
+        if (triangleShouldBeVisible())
             return true;
         else return false;
-    }
-    */
-
-    float dot_product(const Vec3f& v1, const Vec3f& v2)
-    {
-        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     float distance_from_plane_to_point(const Vec3f& planePoint, Vec3f& planeNormal, const Vec3f& point)
     {
         planeNormal.normalise();
-        return (planeNormal.x * point.x + planeNormal.y * point.y + planeNormal.z * point.z - dot_product(planeNormal, planePoint));
+        return planeNormal.x * point.x + planeNormal.y * point.y + planeNormal.z * point.z - dot_product(planeNormal, planePoint);
     }
 
     Vec3f cross_product(const Vec3f& v1, const Vec3f& v2)
@@ -55,7 +48,7 @@ namespace math
                         v1.x * v2.y - v1.y * v2.x );
     }
 
-    Vec3f vector_intersect_plane(Vec3f& line_start, Vec3f& line_end, Vec3f& plane_point, Vec3f& plane_normal)
+    Vec3f vector_intersect_plane(const Vec3f& line_start, const Vec3f& line_end, const Vec3f& plane_point, Vec3f& plane_normal)
     {
         plane_normal.normalise();
         float planedP = -dot_product(plane_normal, plane_point);
@@ -120,58 +113,20 @@ namespace math
         return result;
     }
 
-    int clip_triangle(Vec3f plane_point, Vec3f plane_normal, Triangle& input, Triangle& out1, Triangle& out2, unsigned& clipped_tris_counter, bool clip_hint)
+    void init_projection_matrix(Matrix4x4& matrix, int windowHeight, int windowWidth)
     {
-        plane_normal.normalise();
+        float fnear = 0.1f;
+        float ffar = 1000.0f;
+        float fieldOfView = 90.0f;
+        float aspectRatio = (float)windowHeight / (float)windowWidth;
+        float fovRad = 1.0f / tanf(fieldOfView * 0.5f / 180.0f * 3.14159f);
 
-        Vec3f* inside_points[3];
-        Vec3f* outside_points[3];
-        unsigned inside_points_counter = 0;
-        unsigned outside_points_counter = 0;
-        float point_distance[3]{ 0 };
-
-        for (unsigned i = 0; i < 3; i++)
-            point_distance[i] = distance_from_plane_to_point(plane_point, plane_normal, input.v[i]);
-
-        for (unsigned i = 0; i < 3; i++)
-        {
-            if (point_distance[i] >= 0)
-                inside_points[inside_points_counter++] = &input.v[i];
-            else outside_points[outside_points_counter++] = &input.v[i];
-        }
-
-        /* if all points are behind the field of wiev, i reject the whole triangle
-        (no valid triangles returned)*/
-        if (inside_points_counter == 0) return 0;
-        else if (inside_points_counter == 1 && outside_points_counter == 2)
-        {
-            out1.v[0] = *inside_points[0];
-
-            out1.v[1] = vector_intersect_plane(*inside_points[0], *outside_points[0], plane_point, plane_normal);
-            out1.v[2] = vector_intersect_plane(*inside_points[0], *outside_points[1], plane_point, plane_normal);
-            if (clip_hint) out1.color = sf::Color::Red;
-            clipped_tris_counter++;
-            return 1;
-        }
-        else if (inside_points_counter == 2 && outside_points_counter == 1)
-        {
-            out1.v[0] = *inside_points[0];
-            out1.v[1] = *inside_points[1];
-            out1.v[2] = vector_intersect_plane(*inside_points[0], *outside_points[0], plane_point, plane_normal);
-            if (clip_hint) out1.color = sf::Color::Yellow;
-
-            out2.v[0] = *inside_points[1];
-            out2.v[1] = out1.v[2];
-            out2.v[2] = vector_intersect_plane(*inside_points[1], *outside_points[0], plane_point, plane_normal);
-            if (clip_hint) out2.color = sf::Color::Green;
-            clipped_tris_counter += 2;
-            return 2;
-        }
-        else if (inside_points_counter == 3)
-        {
-            out1 = input;
-            return 1;
-        }
-
+        matrix.m[0][0] = aspectRatio * fovRad;
+        matrix.m[1][1] = fovRad;
+        matrix.m[2][2] = ffar / (ffar - fnear);
+        matrix.m[3][2] = (-ffar * fnear) / (ffar - fnear);
+        matrix.m[2][3] = 1.0f;
+        matrix.m[3][3] = 0.0f;
     }
+
 }

@@ -35,9 +35,9 @@ y(0)
 
 ////////////////////////////////////////////////////////////
 template <typename T>
-inline Vector2<T>::Vector2(T X, T Y) :
-x(X),
-y(Y)
+inline Vector2<T>::Vector2(T X_AXIS, T Y_AXIS) :
+x(X_AXIS),
+y(Y_AXIS)
 {
 
 }

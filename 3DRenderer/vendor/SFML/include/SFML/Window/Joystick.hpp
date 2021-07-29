@@ -59,9 +59,9 @@ public:
     ////////////////////////////////////////////////////////////
     enum Axis
     {
-        X,    ///< The X axis
-        Y,    ///< The Y axis
-        Z,    ///< The Z axis
+        X_AXIS,    ///< The X axis
+        Y_AXIS,    ///< The Y axis
+        Z_AXIS,    ///< The Z axis
         R,    ///< The R axis
         U,    ///< The U axis
         V,    ///< The V axis

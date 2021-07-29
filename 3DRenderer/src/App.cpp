@@ -7,8 +7,8 @@
 
 
 const sf::Time App::TIME_PER_FRAME = sf::seconds(1.0f / 60.0f);
-int App::HEIGHT = 720;
-int App::WIDTH = 1280;
+sf::Time App::DT = sf::Time();
+vec2i App::WindowCenter = vec2i();
 
 static std::string to_string(size_t value)
 {
@@ -32,9 +32,15 @@ App::App(void)
 	register_states();
 }
 
+App::~App(void)
+{
+	delete mStateManager;
+	delete mWindow;
+}
+
 void App::render(void)
 {
-	mWindow->clear();
+	mWindow->clear(sf::Color(176, 176, 176));
 	mStateManager->render();
 	mWindow->draw(mFpsLabel);
 	mWindow->display();
@@ -55,6 +61,7 @@ void App::process_events(void)
 
 void App::update_scene(sf::Time deltaTime)
 {
+	DT = deltaTime;
 	mStateManager->update_scene(deltaTime);
 }
 
@@ -114,7 +121,10 @@ void App::init_fonts(void)
 void App::init_window_settings(void)
 {
 	mWindow->setKeyRepeatEnabled(false);
-	//mWindow->setFramerateLimit(100);
+	mWindow->setMouseCursorVisible(false);
+	mWindow->setMouseCursorGrabbed(true);
+	WindowCenter = vec2i(	mWindow->getPosition().x + static_cast<int>(WIDTH / 2.0f), 
+							mWindow->getPosition().y + static_cast<int>(HEIGHT / 2.0f));
 }
 
 void App::init_labels(void)

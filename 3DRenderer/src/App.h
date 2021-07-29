@@ -11,20 +11,20 @@ private:
 	static const sf::Time TIME_PER_FRAME;
 
 public:
-	static int WIDTH;
-	static int HEIGHT;
+	static constexpr int WIDTH = 1280;
+	static constexpr int HEIGHT = 720;
+	static vec2i WindowCenter;
+	static sf::Time DT;
 
 private:
-
 	sf::RenderWindow* mWindow;
 	TextureManager mTextures;
 	FontManager mFonts;
 	StateManager* mStateManager;
-
-private:
 	sf::Text mFpsLabel;
 	std::size_t FPS;
 
+private:
 	void update_statistics(sf::Time elapsedTime);
 	void register_states(void);
 
@@ -35,7 +35,9 @@ private:
 	void init_fonts(void);
 	void init_window_settings(void);
 	void init_labels(void);
+
 public:
 	App(void);
+	~App(void);
 	void run(void);
 };

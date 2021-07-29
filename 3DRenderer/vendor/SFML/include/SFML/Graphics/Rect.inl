@@ -49,9 +49,9 @@ height(rectHeight)
 
 ////////////////////////////////////////////////////////////
 template <typename T>
-Rect<T>::Rect(const Vector2<T>& position, const Vector2<T>& size) :
-left  (position.x),
-top   (position.y),
+Rect<T>::Rect(const Vector2<T>& mPosition, const Vector2<T>& size) :
+left  (mPosition.x),
+top   (mPosition.y),
 width (size.x),
 height(size.y)
 {

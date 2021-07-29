@@ -4,6 +4,14 @@
 
 namespace math
 {
+
+	const Matrix4x4 Matrix4x4::Identity = Matrix4x4("identity");
+	
+	Matrix4x4::Matrix4x4(const std::string& type)
+	{
+		make_identity_matrix();
+	}
+
 	Matrix4x4::Matrix4x4(char axis, float angle)
 	{
 		axis = std::tolower(axis);
@@ -15,7 +23,7 @@ namespace math
 		}
 	}
 
-	void Matrix4x4::make_translation(Vec3f& trans)
+	void Matrix4x4::make_translation(const Vec3f& trans)
 	{
 		make_identity_matrix();
 		m[3][0] = trans.x;

@@ -36,10 +36,10 @@ z(0)
 
 ////////////////////////////////////////////////////////////
 template <typename T>
-inline Vector3<T>::Vector3(T X, T Y, T Z) :
-x(X),
-y(Y),
-z(Z)
+inline Vector3<T>::Vector3(T X_AXIS, T Y_AXIS, T Z_AXIS) :
+x(X_AXIS),
+y(Y_AXIS),
+z(Z_AXIS)
 {
 
 }

@@ -143,7 +143,7 @@ public:
     {
         unsigned int   joystickId; ///< Index of the joystick (in range [0 .. Joystick::Count - 1])
         Joystick::Axis axis;       ///< Axis on which the joystick moved
-        float          position;   ///< New position on the axis (in range [-100 .. 100])
+        float          mPosition;   ///< New position on the axis (in range [-100 .. 100])
     };
 
     ////////////////////////////////////////////////////////////

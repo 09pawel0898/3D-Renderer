@@ -53,7 +53,7 @@ public:
     /// \param Y Y coordinate
     ///
     ////////////////////////////////////////////////////////////
-    Vector2(T X, T Y);
+    Vector2(T X_AXIS, T Y_AXIS);
 
     ////////////////////////////////////////////////////////////
     /// \brief Construct the vector from another type of vector

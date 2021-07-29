@@ -112,10 +112,10 @@ struct Vector4
     /// \param W Component of the 4D vector
     ///
     ////////////////////////////////////////////////////////////
-    Vector4(T X, T Y, T Z, T W) :
-    x(X),
-    y(Y),
-    z(Z),
+    Vector4(T X_AXIS, T Y_AXIS, T Z_AXIS, T W) :
+    x(X_AXIS),
+    y(Y_AXIS),
+    z(Z_AXIS),
     w(W)
     {
     }

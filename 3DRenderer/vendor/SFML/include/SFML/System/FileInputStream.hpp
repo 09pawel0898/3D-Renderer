@@ -99,7 +99,7 @@ public:
     /// \return The position actually sought to, or -1 on error
     ///
     ////////////////////////////////////////////////////////////
-    virtual Int64 seek(Int64 position);
+    virtual Int64 seek(Int64 mPosition);
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the current reading position in the stream

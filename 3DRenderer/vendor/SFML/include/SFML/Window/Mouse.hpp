@@ -112,7 +112,7 @@ public:
     /// \param position New position of the mouse
     ///
     ////////////////////////////////////////////////////////////
-    static void setPosition(const Vector2i& position);
+    static void setPosition(const Vector2i& mPosition);
 
     ////////////////////////////////////////////////////////////
     /// \brief Set the current position of the mouse in window coordinates
@@ -124,7 +124,7 @@ public:
     /// \param relativeTo Reference window
     ///
     ////////////////////////////////////////////////////////////
-    static void setPosition(const Vector2i& position, const Window& relativeTo);
+    static void setPosition(const Vector2i& mPosition, const Window& relativeTo);
 };
 
 } // namespace sf
