@@ -36,6 +36,8 @@ private:
 	void init_window_settings(void);
 	void init_labels(void);
 
+	App(const App& app) = delete;
+	App& operator=(const App& app) = delete;
 public:
 	App(void);
 	~App(void);

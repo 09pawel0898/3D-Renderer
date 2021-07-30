@@ -8,7 +8,9 @@ public:
 	enum class ID
 	{
 		INFO,
-		NUM_MESH_POLYGONS
+		NUM_MESH_POLYGONS,
+		NUM_CLIPPED_TRIS,
+		NUM_DRAWN_TRIS
 	};
 
 private:

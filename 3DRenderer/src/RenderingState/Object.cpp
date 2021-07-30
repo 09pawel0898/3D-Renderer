@@ -30,6 +30,7 @@ void Object::draw_mesh(sf::RenderTarget & target) const
     /* rotating mesh */
     //mMesh->rotate(RotationType::NONE, matWorld, matTrans);
 
+    // this loop need optimizations mostly
     for (const auto& triangle : mMesh->get_triangles())
     {
         Triangle triangleProjected, triangleTranslated, triangleViewed; // declaring triangles that represents single state
@@ -43,10 +44,14 @@ void Object::draw_mesh(sf::RenderTarget & target) const
     }
 
     // sorting triangles from the farthest to the closest by averaged Z component 
-    mMesh->sort_triangles(trisToClip);
+    //mMesh->sort_triangles(trisToClip);
 
     // clipping already two dimensional triangles againts window edges
     unsigned drawnTriangles = 0;
+    unsigned triId = 0;
+
+    RenderingState::Vertices.clear();
+    RenderingState::Vertices.resize(mMesh->mTrisCount * 3);
 
     for (const auto& triangle : trisToClip)
     {
@@ -56,19 +61,15 @@ void Object::draw_mesh(sf::RenderTarget & target) const
         trisToProject.push_back(triangle);
         clip_against_window_edges(trisToProject, triangle, clippedTrisCounter);
 
-        /*
-        *
-        *   Batch rendering here in the future ???
-        *
-        */
-
         // drawing every triangle created from clipping from single triangle from tris_to_clip
         for (auto& i : trisToProject)
         {
             drawnTriangles++;
-            mMesh->draw_triangle(i, target, RenderingState::MeshVisible, *mCamera);
+            mMesh->draw_triangle(i, target, RenderingState::MeshVisible, *mCamera, triId);
+            triId++;
         }
     }
+    target.draw(RenderingState::Vertices);
 
     // update label info
     RenderingState::ClippedPolygons = clippedTrisCounter;
@@ -109,8 +110,7 @@ void Object::clip_against_window_edges(std::list<Triangle>& trisToProject, const
 
     struct Plane
     {
-        Vec3f point;
-        Vec3f normal;
+        Vec3f point, normal;
     };
 
     static const Plane planes[4] =
@@ -121,7 +121,7 @@ void Object::clip_against_window_edges(std::list<Triangle>& trisToProject, const
         {{ App::WIDTH + 1, 0.0f, 0.0f },    { -1.0f, 0.0f, 0.0f }}
     };
 
-    std::for_each(planes, planes + 3, [&](const Plane& plane) 
+    std::for_each(planes, planes + 4, [&](const Plane& plane) 
     {
             uint8_t trisToAdd = 0;
             while (newTris > 0)

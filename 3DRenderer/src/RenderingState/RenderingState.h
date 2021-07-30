@@ -14,6 +14,9 @@ namespace States
 	class RenderingState : public State
 	{
 	public:
+		// temporary (will be moved to renderer clas) //
+		static sf::VertexArray Vertices;
+
 		static Matrix4x4 ProjectionMatrix;
 		static unsigned ClippedPolygons;
 		static unsigned DrawnPolygons;

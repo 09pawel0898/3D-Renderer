@@ -7,7 +7,9 @@
 #include "Object.h"
 #include "Mesh.h"
 
+sf::VertexArray States::RenderingState::Vertices = sf::VertexArray();
 Matrix4x4 States::RenderingState::ProjectionMatrix = Matrix4x4();
+
 unsigned States::RenderingState::ClippedPolygons = 0;
 unsigned States::RenderingState::DrawnPolygons = 0;
 unsigned States::RenderingState::AllPolygons = 0;
@@ -26,7 +28,9 @@ namespace States
 		init_labels();
 		init_resources();
 
-		mObject->mMesh->load_obj("axis.obj");
+		mObject->mMesh->load_obj("teapot.obj");
+		Vertices.setPrimitiveType(sf::Triangles);
+		Vertices.resize(mObject->mMesh->mTrisCount * 3);
 	}
 
 	RenderingState::~RenderingState(void)
@@ -36,8 +40,13 @@ namespace States
 	void RenderingState::init_labels(void)
 	{
 		mLabelHolder->add_label(LabelHolder::ID::INFO,vec2f(10, 10),sf::Text(	" E - change rotation | Space - color | Q - Clipping visible",
-																				get_context().mFonts->get_resource(Fonts::ID::SANSATION),
-																				25));
+																				get_context().mFonts->get_resource(Fonts::ID::SANSATION),20));
+		mLabelHolder->add_label(LabelHolder::ID::NUM_CLIPPED_TRIS, vec2f(10, 30),	sf::Text(" Clipped polygons : ",
+																				get_context().mFonts->get_resource(Fonts::ID::SANSATION),20));
+		mLabelHolder->add_label(LabelHolder::ID::NUM_DRAWN_TRIS, vec2f(10, 50), sf::Text(" Drawn polygons : ",
+																				get_context().mFonts->get_resource(Fonts::ID::SANSATION),20));
+		mLabelHolder->add_label(LabelHolder::ID::NUM_MESH_POLYGONS, vec2f(10, 70),	sf::Text(" Mesh polygons : ",
+																				get_context().mFonts->get_resource(Fonts::ID::SANSATION),20));
 	}
 
 	void RenderingState::init_resources(void)
@@ -58,6 +67,10 @@ namespace States
 		//auto cursorInWindow = [this]()
 		//{ return  (MousePos.x > 0 && MousePos.x < App::WIDTH&& MousePos.y > 0 && MousePos.y < App::HEIGHT) ? true : false; };
 		
+		mLabelHolder->get_label(LabelHolder::ID::NUM_CLIPPED_TRIS).setString(" Clipped polygons : " + std::to_string(ClippedPolygons));
+		mLabelHolder->get_label(LabelHolder::ID::NUM_DRAWN_TRIS).setString(" Drawn polygons : " + std::to_string(DrawnPolygons));
+		mLabelHolder->get_label(LabelHolder::ID::NUM_MESH_POLYGONS).setString(" Mesh polygons : " + std::to_string(AllPolygons));
+
 		return true;
 	}
 

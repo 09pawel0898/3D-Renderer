@@ -1,7 +1,7 @@
 #include "../pch.h"
 #include "Mesh.h"
 #include "Camera.h"
-
+#include "RenderingState.h"
 
 bool Mesh::load_obj(const std::string& fileName)
 {
@@ -39,6 +39,7 @@ bool Mesh::load_obj(const std::string& fileName)
         }
         ss = std::stringstream();
     }
+    States::RenderingState::AllPolygons = mTrisCount;
     return true;
 }
 
@@ -53,7 +54,7 @@ void Mesh::sort_triangles(std::vector<Triangle>& mTris)
     });
 }
 
-void Mesh::draw_triangle(const Triangle &triangle, sf::RenderTarget& target , bool isMeshActive, const Camera& cam ) const
+void Mesh::draw_triangle(const Triangle &triangle, sf::RenderTarget& target , bool isMeshActive, const Camera& cam, unsigned& triId) const
 {
     // drawing colored triangles or just a mesh depending on the choosen mode
     if (!isMeshActive)
@@ -75,9 +76,9 @@ void Mesh::draw_triangle(const Triangle &triangle, sf::RenderTarget& target , bo
                                     (int)(dP * 255));
 
         if(triangle.color == sf::Color::White)
-            fill_triangle(target, color, triangle);
+            fill_triangle(target, color, triangle,triId);
         else
-            fill_triangle(target, triangle.color, triangle);
+            fill_triangle(target, triangle.color, triangle,triId);
     }
     else
         draw_border(target, triangle);
@@ -95,9 +96,10 @@ void Mesh::draw_border(sf::RenderTarget& target,  const Triangle& triangle ) con
     target.draw(lines);
 }
 
-void Mesh::fill_triangle(sf::RenderTarget& target, sf::Color color, const Triangle& triangle) const
+void Mesh::fill_triangle(sf::RenderTarget& target, sf::Color color, const Triangle& triangle, unsigned& triId) const
 {
     // drawing filled triangle
+    /*
     sf::ConvexShape tri;
     tri.setPointCount(3);
     tri.setPoint(0, sf::Vector2f(triangle.v[0].x, triangle.v[0].y));
@@ -105,6 +107,14 @@ void Mesh::fill_triangle(sf::RenderTarget& target, sf::Color color, const Triang
     tri.setPoint(2, sf::Vector2f(triangle.v[2].x, triangle.v[2].y));
     tri.setFillColor(color);
     target.draw(tri);
+    */
+
+    sf::Vertex* vertexArray = &States::RenderingState::Vertices[triId * 3];
+    vertexArray[0].mPosition = std::move(sf::Vector2f(triangle.v[0].x, triangle.v[0].y));
+    vertexArray[1].mPosition = std::move(sf::Vector2f(triangle.v[1].x, triangle.v[1].y));
+    vertexArray[2].mPosition = std::move(sf::Vector2f(triangle.v[2].x, triangle.v[2].y));
+    
+    vertexArray[0].color = vertexArray[1].color = vertexArray[2].color = color;
 }
 
 
