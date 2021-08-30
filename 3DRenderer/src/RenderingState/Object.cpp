@@ -31,20 +31,24 @@ void Object::draw_mesh(sf::RenderTarget & target) const
     //mMesh->rotate(RotationType::NONE, matWorld, matTrans);
 
     // this loop need optimizations mostly
+    
+    
+    
     for (const auto& triangle : mMesh->get_triangles())
     {
-        Triangle triangleProjected, triangleTranslated, triangleViewed; // declaring triangles that represents single state
+        Triangle triangleProjected,  triangleViewed; // declaring triangles that represents single state
+        Triangle triangleTranslated = translate_triangle_by_matrix(triangle, mMatTrans);
 
-        triangleTranslated = translate_triangle_by_matrix(triangle, mMatTrans);
         if (calculate_normal(triangleTranslated, mCamera->get_position()))
         {
             triangleViewed = translate_triangle_by_matrix(triangleTranslated, matView);                                     // conversion from world space to viewed triangle 
             clip_against_near_plane(trisToClip, triangleProjected, triangleViewed, triangleTranslated, clippedTrisCounter); // clipping against the fNear plane, i store newly created polygons in a vector
         }
+        
     }
-
+    
     // sorting triangles from the farthest to the closest by averaged Z component 
-    //mMesh->sort_triangles(trisToClip);
+    mMesh->sort_triangles(trisToClip);
 
     // clipping already two dimensional triangles againts window edges
     unsigned drawnTriangles = 0;
