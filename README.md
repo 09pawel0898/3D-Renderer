@@ -8,16 +8,15 @@ Features :
 - Support .obj files
 - Clipping
 
-Since i am having troubles with optimization, i stopped the project till i will learn more about modern C++ and achieve a better performance. 
-<br/>
+Since i am having troubles with optimization, i stopped the project till i will learn more about modern C++ and achieve a better performance.  
+
 Then there will be the following things to do :
 - Texturing
 - Better lighting
-- Minecraft (heh)
+- Minecraft (heh)  
+  
 
-<br/>
-I was inspired by javidx9's excellent [series](https://www.youtube.com/watch?v=ih20l3pJoeU "series") about 3d graphics engine in console.
-<br/>
+I was inspired by javidx9's excellent [series](https://www.youtube.com/watch?v=ih20l3pJoeU "series") about 3d graphics engine in console.  
 
 ![ScreenShot](Screenshots/scr1.png)
 
