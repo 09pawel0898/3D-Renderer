@@ -15,6 +15,9 @@ Then there will be the following things to do :
 - Better lighting
 - Minecraft (heh)
 
+<br/>
+I was inspired by javidx9's excellent [series](https://www.youtube.com/watch?v=ih20l3pJoeU "series") about 3d graphics engine in console.
+
 ![ScreenShot](Screenshots/scr1.png)
 
 ![ScreenShot](Screenshots/scr2.png)
