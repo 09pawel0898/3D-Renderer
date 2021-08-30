@@ -15,6 +15,6 @@ Then there will be the following things to do :
 - Better lighting
 - Minecraft (heh)
 
-![ScreenShot](Screenshots/scr1.jpg)
+![ScreenShot](Screenshots/scr1.png)
 
-![ScreenShot](Screenshots/scr2.jpg)
+![ScreenShot](Screenshots/scr2.png)
